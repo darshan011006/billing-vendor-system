@@ -1,5 +1,6 @@
 import { q, one } from '@/lib/db';
 import { requireRole, handler, HttpError } from '@/lib/auth';
+import { indexProduct } from '@/lib/vectors';
 
 // GET /api/products?q=kum&branch=1 — product search with stock at the branch (billing screen)
 export const GET = handler(async (req) => {
@@ -27,10 +28,11 @@ export const POST = handler(async (req) => {
   for (const f of ['name', 'sku', 'category', 'costPrice', 'sellingPrice', 'mrp']) {
     if (b[f] === undefined || b[f] === '') throw new HttpError(400, `${f} is required`);
   }
+  // existing category, or a new one placed under an optional parent (category tree)
   const cat = await one(
-    `INSERT INTO categories (name) VALUES ($1)
+    `INSERT INTO categories (name, parent_id) VALUES ($1, (SELECT category_id FROM categories WHERE name = NULLIF($2, '')))
      ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING category_id`,
-    [String(b.category).trim()],
+    [String(b.category).trim(), String(b.parentCategory || '').trim()],
   );
   const p = await one(
     `INSERT INTO products (category_id, sku, barcode, name, hsn_code, gst_rate, unit, cost_price, selling_price, mrp, low_stock_threshold)
@@ -38,5 +40,8 @@ export const POST = handler(async (req) => {
     [cat.category_id, b.sku.trim().toUpperCase(), b.barcode || '', b.name.trim(), b.hsnCode || '', Number(b.gstRate || 0), b.unit || 'pcs',
      Number(b.costPrice), Number(b.sellingPrice), Number(b.mrp), Number(b.lowStockThreshold || 5)],
   );
+  await indexProduct(p.product_id).catch(() => false); // add its embedding to MongoDB product_vectors
   return Response.json(p, { status: 201 });
 });
+
+export const dynamic = 'force-dynamic';

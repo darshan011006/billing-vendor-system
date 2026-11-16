@@ -1,5 +1,8 @@
-// Creates the MongoDB collections, schema validator and indexes (Section 6 of the report).
-// Used by scripts/setup-db.mjs; safe to run again.
+// Creates the MongoDB collections, schema validators and indexes. Safe to run again.
+//   notification_logs  every WhatsApp message (bill, order status, vendor payment, OTP, low stock)
+//   otp_sessions       login codes awaiting verification (TTL index deletes them after 5 minutes)
+//   product_vectors    one 256-number embedding per product, for vector similarity search
+const { DIMS } = require('./embedding');
 
 const notificationValidator = {
   $jsonSchema: {
@@ -18,15 +21,33 @@ const notificationValidator = {
   },
 };
 
+const vectorValidator = {
+  $jsonSchema: {
+    bsonType: 'object',
+    required: ['productId', 'name', 'embedding', 'model', 'updatedAt'],
+    properties: {
+      productId: { bsonType: 'int' },
+      name: { bsonType: 'string' },
+      embedding: { bsonType: 'array', minItems: DIMS, maxItems: DIMS, items: { bsonType: ['double', 'int'] } },
+      model: { bsonType: 'string' },
+      updatedAt: { bsonType: 'date' },
+    },
+  },
+};
+
+async function ensureCollection(db, existing, name, validator) {
+  if (!existing.includes(name)) {
+    await db.createCollection(name, validator ? { validator, validationAction: 'error' } : {});
+  } else if (validator) {
+    await db.command({ collMod: name, validator, validationAction: 'error' });
+  }
+}
+
 async function initMongo(db) {
   const existing = (await db.listCollections({}, { nameOnly: true }).toArray()).map((c) => c.name);
-
-  if (!existing.includes('notification_logs')) {
-    await db.createCollection('notification_logs', { validator: notificationValidator, validationAction: 'error' });
-  } else {
-    await db.command({ collMod: 'notification_logs', validator: notificationValidator, validationAction: 'error' });
-  }
-  if (!existing.includes('otp_sessions')) await db.createCollection('otp_sessions');
+  await ensureCollection(db, existing, 'notification_logs', notificationValidator);
+  await ensureCollection(db, existing, 'otp_sessions');
+  await ensureCollection(db, existing, 'product_vectors', vectorValidator);
 
   const logs = db.collection('notification_logs');
   await logs.createIndex({ type: 1, status: 1, createdAt: -1 });
@@ -37,6 +58,8 @@ async function initMongo(db) {
   const otp = db.collection('otp_sessions');
   await otp.createIndex({ createdAt: 1 }, { expireAfterSeconds: 300 });
   await otp.createIndex({ userId: 1 });
+
+  await db.collection('product_vectors').createIndex({ productId: 1 }, { unique: true });
 }
 
 module.exports = { initMongo };
