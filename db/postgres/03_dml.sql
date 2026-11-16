@@ -13,7 +13,10 @@ INSERT INTO customers (user_id, name, whatsapp_no, customer_type, credit_limit) 
  (NULL, 'Sri Ganesh Stores', '919900033344', 'wholesale', 50000),
  (NULL, 'Ramesh Rao',        '919845566778', 'retail',    0);
 
-INSERT INTO categories (name) VALUES ('Pooja Items'), ('Lamps & Brassware'), ('Incense'), ('Groceries');
+-- Category tree (self-referencing parent_id): Pooja Items > Incense > Dhoop & Cones, Groceries > Ghee & Oils
+INSERT INTO categories (name, parent_id) VALUES
+ ('Pooja Items', NULL), ('Lamps & Brassware', 1), ('Incense', 1), ('Groceries', NULL),
+ ('Dhoop & Cones', 3), ('Ghee & Oils', 4);
 
 INSERT INTO products (category_id, sku, barcode, name, hsn_code, gst_rate, cost_price, selling_price, mrp, low_stock_threshold) VALUES
  (1, 'PJ-KUM-100', '8901000000011', 'Kumkum 100 g',            '3304', 18,  22.00,   35.00,   40.00, 10),
@@ -22,8 +25,8 @@ INSERT INTO products (category_id, sku, barcode, name, hsn_code, gst_rate, cost_
  (1, 'PJ-CAM-50',  '8901000000042', 'Camphor Tablets 50 g',    '2914', 18,  45.00,   70.00,   75.00, 15),
  (1, 'PJ-WIC-100', '8901000000059', 'Ghee Cotton Wicks (100)', '5601',  5,  18.00,   30.00,   30.00, 25),
  (2, 'LB-KAL-01',  '8901000000066', 'Silver Plated Kalash',    '7418', 12, 850.00, 1250.00, 1400.00,  2),
- (4, 'GR-GHE-500', '8901000000073', 'Cow Ghee 500 ml',         '0405', 12, 290.00,  365.00,  380.00,  8),
- (3, 'IN-DHP-12',  '8901000000080', 'Dhoop Cones (12)',        '3307',  5,  25.00,   40.00,   45.00, 10);
+ (6, 'GR-GHE-500', '8901000000073', 'Cow Ghee 500 ml',         '0405', 12, 290.00,  365.00,  380.00,  8),
+ (5, 'IN-DHP-12',  '8901000000080', 'Dhoop Cones (12)',        '3307',  5,  25.00,   40.00,   45.00, 10);
 
 INSERT INTO vendors (name, gstin, contact_person, whatsapp_no, email, opening_balance) VALUES
  ('Shree Brass Works',           '29AAACS1111A1Z1', 'Mahesh',  '919811122233', 'sales@shreebrass.example',  5000),
@@ -42,7 +45,7 @@ INSERT INTO purchase_items (purchase_id, line_no, product_id, quantity, unit_cos
  (2, 4, 8,  30,  25.00,  5),
  (3, 1, 4,  40,  45.00, 18),
  (3, 2, 7,  20, 290.00, 12),
- (4, 1, 3,  80,  12.00,  5),
+ (4, 1, 3,  80,  13.00,  5),   -- price went up: see query Q7
  (4, 2, 1,  30,  22.00, 18);
 
 -- One vendor bill paid in full (trigger T5 marks it paid)

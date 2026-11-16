@@ -33,7 +33,9 @@ CREATE TABLE customers (
 
 CREATE TABLE categories (
     category_id   SERIAL PRIMARY KEY,
-    name          VARCHAR(60) NOT NULL UNIQUE
+    name          VARCHAR(60) NOT NULL UNIQUE,
+    parent_id     INT REFERENCES categories(category_id) ON DELETE SET NULL,   -- self-reference: category tree
+    CHECK (parent_id IS NULL OR parent_id <> category_id)
 );
 
 CREATE TABLE products (
