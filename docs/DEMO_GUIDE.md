@@ -1,6 +1,6 @@
 # Mini Project Demo Guide — 14 deliverables
 
-Start the app (`npm run dev`, or double-click `Start BillDesk.command` on a Mac), open http://localhost:3000. The sign-in code appears on screen in yellow (demo mode).
+Start the app (`npm run dev`, or double-click `Start BillDesk.bat` on Windows / `Start BillDesk.command` on a Mac), open http://localhost:3000. The sign-in code appears on screen in yellow (demo mode).
 
 | Login | Password | Role |
 | --- | --- | --- |

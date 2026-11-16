@@ -26,3 +26,5 @@ git push -u origin feature/<what-you-change>
 ```
 
 The repository owner (Darshan) adds Deepak under **Settings → Collaborators** so he can push.
+
+**On Windows:** install [Git for Windows](https://git-scm.com/download/win) (or use [GitHub Desktop](https://desktop.github.com) for clone / commit / push without the command line), then run the same commands in *Git Bash* or *Command Prompt*. To start the app, double-click `Start BillDesk.bat`.

@@ -84,7 +84,8 @@ export async function setupDatabases({ reset = false, quiet = false } = {}) {
   }
 }
 
-if (fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
+// run directly (npm run db:setup / db:reset); compare case-insensitively for Windows drive letters
+if (fileURLToPath(import.meta.url).toLowerCase() === path.resolve(process.argv[1]).toLowerCase()) {
   setupDatabases({ reset: process.argv.includes('--reset') })
     .then(() => process.exit(0))
     .catch((e) => { console.error(e.message); process.exit(1); });

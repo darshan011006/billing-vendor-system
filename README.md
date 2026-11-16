@@ -20,7 +20,14 @@ npm install
 npm run dev
 ```
 
-On a Mac you can instead double-click **`Start BillDesk.command`** (it also installs Node.js if needed).
+Or double-click the launcher for your system — it installs Node.js if needed, installs packages on the first run, and opens the browser:
+
+| System | Launcher |
+| --- | --- |
+| Windows | **`Start BillDesk.bat`** (if Windows SmartScreen warns, click *More info → Run anyway*) |
+| macOS | **`Start BillDesk.command`** (first time: right-click → *Open*) |
+
+On Windows, if the bundled PostgreSQL will not start (some PCs lack the Microsoft Visual C++ runtime), install the [Visual C++ Redistributable x64](https://aka.ms/vs/17/release/vc_redist.x64.exe) and run the launcher again.
 
 Open **http://localhost:3000**:
 
