@@ -4,6 +4,15 @@ DBMS mini project · Next.js 14 · PostgreSQL 16 · MongoDB 7 · WhatsApp Busine
 
 Small retail and wholesale shops bill customers, track stock and pay vendors by hand. This app does the whole order → invoice → payment → WhatsApp cycle, with the business rules (stock, invoice numbers, balances, alerts, access control) enforced inside the database.
 
+## Team
+
+| SRN | Name |
+| --- | --- |
+| PES1UG24CS138 | Darshan GS |
+| PES1UG24CS143 | Deepak B |
+
+Who owns which part: [docs/CONTRIBUTIONS.md](docs/CONTRIBUTIONS.md)
+
 ## Run it
 
 ```bash
