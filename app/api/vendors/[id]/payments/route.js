@@ -1,6 +1,6 @@
 // POST /api/vendors/:id/payments — pay a vendor and confirm it on WhatsApp.
 // sp_record_vendor_payment rejects over-payment; trigger trg_vendor_payment updates the purchase.
-import { pool, one } from '@/lib/db';
+import { q, one } from '@/lib/db';
 import { requireRole, handler, HttpError } from '@/lib/auth';
 import { notify } from '@/lib/notify';
 
@@ -11,7 +11,8 @@ export const POST = handler(async (req, { params }) => {
   if (!(amt > 0)) throw new HttpError(400, 'Enter an amount');
   if (mode !== 'cash' && !String(referenceNo || '').trim()) throw new HttpError(400, 'Enter the UPI / cheque / NEFT reference');
 
-  await pool.query('CALL sp_record_vendor_payment($1, $2, $3, $4, $5, $6)', [
+  // runs as erp_admin: only that database role has EXECUTE on this procedure
+  await q('CALL sp_record_vendor_payment($1, $2, $3, $4, $5, $6)', [
     Number(params.id), purchaseId ? Number(purchaseId) : null, amt, mode, referenceNo || null, user.id,
   ]);
 
@@ -26,3 +27,5 @@ export const POST = handler(async (req, { params }) => {
   });
   return Response.json({ ok: true, balance: v.balance, whatsapp: wa }, { status: 201 });
 });
+
+export const dynamic = 'force-dynamic';

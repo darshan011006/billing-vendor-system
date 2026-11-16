@@ -1,7 +1,7 @@
 // LISTEN low_stock: trigger trg_low_stock calls pg_notify('low_stock', …) when an item drops
 // to its alert level. This worker turns each notification into a WhatsApp alert to every admin.
 import pg from 'pg';
-import { q, one } from '@/lib/db';
+import { q, one, appDatabaseUrl } from '@/lib/db';
 import { notify } from '@/lib/notify';
 
 export async function startLowStockListener() {
@@ -10,7 +10,7 @@ export async function startLowStockListener() {
   g.__lowStockListener = true;
 
   const connect = async () => {
-    const client = new pg.Client({ connectionString: process.env.DATABASE_URL });
+    const client = new pg.Client({ connectionString: appDatabaseUrl() });
     client.on('error', () => {});
     client.on('end', () => setTimeout(connect, 5000));
     try {
