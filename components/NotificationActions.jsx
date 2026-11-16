@@ -16,16 +16,16 @@ export function RowActions({ id, status }) {
   return (
     <div className="flex gap-1">
       {['queued', 'sent'].includes(status) && (
-        <button disabled={busy} className="rounded border border-slate-300 px-2 py-0.5 text-[11px] font-semibold text-slate-600 hover:bg-slate-50" onClick={() => call('PATCH', { status: 'delivered' })} title="updateOne: $set status, $push history">
+        <button disabled={busy} className="whitespace-nowrap rounded border border-slate-300 px-2 py-0.5 text-[11px] font-semibold text-slate-600 hover:bg-slate-50" onClick={() => call('PATCH', { status: 'delivered' })} title="updateOne: $set status, $push history">
           Mark delivered
         </button>
       )}
       {status === 'delivered' && (
-        <button disabled={busy} className="rounded border border-slate-300 px-2 py-0.5 text-[11px] font-semibold text-slate-600 hover:bg-slate-50" onClick={() => call('PATCH', { status: 'read' })}>
+        <button disabled={busy} className="whitespace-nowrap rounded border border-slate-300 px-2 py-0.5 text-[11px] font-semibold text-slate-600 hover:bg-slate-50" onClick={() => call('PATCH', { status: 'read' })}>
           Mark read
         </button>
       )}
-      <button disabled={busy} className="rounded border border-red-200 px-2 py-0.5 text-[11px] font-semibold text-red-600 hover:bg-red-50" onClick={() => confirm('Delete this log entry?') && call('DELETE')} title="deleteOne">
+      <button disabled={busy} className="whitespace-nowrap rounded border border-red-200 px-2 py-0.5 text-[11px] font-semibold text-red-600 hover:bg-red-50" onClick={() => confirm('Delete this log entry?') && call('DELETE')} title="deleteOne">
         Delete
       </button>
     </div>

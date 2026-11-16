@@ -67,3 +67,8 @@ BEGIN;
   CALL sp_generate_invoice(2, NULL);
 COMMIT;
 INSERT INTO customer_payments (invoice_id, amount, mode, received_by) VALUES (2, 1000.00, 'cash', 2);
+
+-- UPDATE and DELETE
+UPDATE orders    SET status = 'delivered'          WHERE order_id = 1;
+UPDATE customers SET email  = 'anita@example.com'  WHERE customer_id = 1;
+DELETE FROM low_stock_alerts WHERE status = 'resolved' AND created_at < now() - INTERVAL '90 days';

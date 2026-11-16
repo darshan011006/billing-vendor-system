@@ -9,10 +9,16 @@ export async function startLowStockListener() {
   if (g.__lowStockListener) return;
   g.__lowStockListener = true;
 
+  // at most one reconnect is ever pending, so a database restart cannot pile up connections
+  let timer = null;
+  const retry = () => {
+    if (!timer) timer = setTimeout(() => { timer = null; connect(); }, 5000);
+  };
+
   const connect = async () => {
     const client = new pg.Client({ connectionString: appDatabaseUrl() });
     client.on('error', () => {});
-    client.on('end', () => setTimeout(connect, 5000));
+    client.on('end', retry);
     try {
       await client.connect();
       await client.query('LISTEN low_stock');
@@ -40,7 +46,9 @@ export async function startLowStockListener() {
       });
       console.log('[worker] listening for low_stock notifications');
     } catch {
-      setTimeout(connect, 5000);
+      client.removeAllListeners('end');
+      client.end().catch(() => {});
+      retry();
     }
   };
   connect();
