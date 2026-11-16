@@ -20,3 +20,5 @@ export const POST = handler(async (req) => {
   );
   return Response.json(await one('SELECT invoice_id, amount_paid, status FROM invoices WHERE invoice_id = $1', [inv.invoice_id]), { status: 201 });
 });
+
+export const dynamic = 'force-dynamic';

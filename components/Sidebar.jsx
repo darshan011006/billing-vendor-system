@@ -17,8 +17,10 @@ const NAV = {
     ['Vendors', null],
     ['/admin/vendors', 'Vendors'],
     ['/admin/purchases', 'Purchases'],
-    ['System', null],
-    ['/admin/notifications', 'WhatsApp Log'],
+    ['Database', null],
+    ['/admin/reports', 'SQL Reports'],
+    ['/admin/notifications', 'MongoDB · WhatsApp Log'],
+    ['/admin/security', 'DB Security (RBAC)'],
     ['/admin/users', 'Users'],
   ],
   staff: [

@@ -37,3 +37,5 @@ export const POST = handler(async (req) => {
   });
   return Response.json(user, { status: 201 });
 });
+
+export const dynamic = 'force-dynamic';

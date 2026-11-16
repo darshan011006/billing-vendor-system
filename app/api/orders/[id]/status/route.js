@@ -44,3 +44,5 @@ export const PATCH = handler(async (req, { params }) => {
   });
   return Response.json(await one('SELECT order_id, status FROM orders WHERE order_id = $1', [id]));
 });
+
+export const dynamic = 'force-dynamic';

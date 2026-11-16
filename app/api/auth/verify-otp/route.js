@@ -27,3 +27,5 @@ export const POST = handler(async (req) => {
   const redirect = u.role === 'admin' ? '/admin/dashboard' : u.role === 'staff' ? '/staff/dashboard' : '/customer/dashboard';
   return Response.json({ ok: true, redirect });
 });
+
+export const dynamic = 'force-dynamic';

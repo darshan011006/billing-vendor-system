@@ -21,3 +21,5 @@ export const POST = handler(async (_req, { params }) => {
   });
   return Response.json(r, { status: r.ok ? 200 : 502 });
 });
+
+export const dynamic = 'force-dynamic';

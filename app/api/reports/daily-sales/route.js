@@ -10,3 +10,5 @@ export const GET = handler(async () => {
       WHERE d.invoice_date >= CURRENT_DATE - 30 ORDER BY d.invoice_date DESC, b.code`,
   ));
 });
+
+export const dynamic = 'force-dynamic';

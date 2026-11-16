@@ -1,5 +1,7 @@
 node_modules/
 .next/
 .data/
+.tools/
 .env.local
+run.log
 .DS_Store

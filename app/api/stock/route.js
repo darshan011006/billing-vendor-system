@@ -11,3 +11,5 @@ export const GET = handler(async () => {
       ORDER BY p.name, b.code`,
   ));
 });
+
+export const dynamic = 'force-dynamic';

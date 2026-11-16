@@ -1,0 +1,106 @@
+erDiagram
+    BRANCHES ||--o{ USERS : employs
+    BRANCHES ||--o{ STOCK : holds
+    BRANCHES ||--o{ ORDERS : takes
+    BRANCHES ||--o{ PURCHASES : receives
+    BRANCHES ||--o{ INVOICE_SEQUENCES : numbers
+    BRANCHES ||--o{ LOW_STOCK_ALERTS : raises
+    USERS |o--o| CUSTOMERS : "logs in as"
+    USERS ||--o{ ORDERS : creates
+    USERS ||--o{ VENDOR_PAYMENTS : "pays"
+    USERS ||--o{ CUSTOMER_PAYMENTS : receives
+    CUSTOMERS ||--o{ ORDERS : places
+    CATEGORIES ||--o{ PRODUCTS : groups
+    CATEGORIES |o--o{ CATEGORIES : "parent of"
+    PRODUCTS ||--o{ STOCK : "stocked as"
+    PRODUCTS ||--o{ ORDER_ITEMS : "sold in"
+    PRODUCTS ||--o{ PURCHASE_ITEMS : "bought in"
+    PRODUCTS ||--o{ LOW_STOCK_ALERTS : "alerted for"
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    ORDERS ||--o| INVOICES : "billed as"
+    INVOICES ||--o{ CUSTOMER_PAYMENTS : "settled by"
+    VENDORS ||--o{ PURCHASES : supplies
+    VENDORS ||--o{ VENDOR_PAYMENTS : "paid via"
+    PURCHASES ||--|{ PURCHASE_ITEMS : contains
+    PURCHASES |o--o{ VENDOR_PAYMENTS : "settled by"
+
+    BRANCHES { int branch_id PK
+        varchar code UK
+        varchar name
+        char gstin }
+    USERS { int user_id PK
+        int branch_id FK
+        varchar username UK
+        varchar whatsapp_no
+        varchar role "admin|staff|customer" }
+    CUSTOMERS { int customer_id PK
+        int user_id FK,UK
+        varchar name
+        varchar whatsapp_no UK
+        varchar customer_type
+        numeric credit_limit }
+    CATEGORIES { int category_id PK
+        varchar name UK
+        int parent_id FK "self-reference" }
+    PRODUCTS { int product_id PK
+        int category_id FK
+        varchar sku UK
+        varchar name
+        numeric gst_rate
+        numeric selling_price
+        int low_stock_threshold }
+    STOCK { int product_id PK,FK
+        int branch_id PK,FK
+        numeric quantity }
+    LOW_STOCK_ALERTS { int alert_id PK
+        int product_id FK
+        int branch_id FK
+        numeric quantity
+        varchar status }
+    ORDERS { int order_id PK
+        int branch_id FK
+        int customer_id FK
+        int created_by FK
+        varchar status }
+    ORDER_ITEMS { int order_id PK,FK
+        smallint line_no PK
+        int product_id FK
+        numeric quantity
+        numeric line_total "generated" }
+    INVOICE_SEQUENCES { int branch_id PK,FK
+        char fiscal_year PK
+        int last_seq }
+    INVOICES { int invoice_id PK
+        int order_id FK,UK
+        varchar invoice_no UK
+        numeric total_amount
+        numeric amount_paid
+        varchar status }
+    CUSTOMER_PAYMENTS { int payment_id PK
+        int invoice_id FK
+        numeric amount
+        varchar mode
+        int received_by FK }
+    VENDORS { int vendor_id PK
+        varchar name
+        char gstin UK
+        varchar whatsapp_no
+        numeric opening_balance }
+    PURCHASES { int purchase_id PK
+        int vendor_id FK
+        int branch_id FK
+        varchar vendor_invoice_no
+        numeric total_amount
+        numeric paid_amount
+        varchar status }
+    PURCHASE_ITEMS { int purchase_id PK,FK
+        smallint line_no PK
+        int product_id FK
+        numeric quantity
+        numeric unit_cost }
+    VENDOR_PAYMENTS { int vendor_payment_id PK
+        int vendor_id FK
+        int purchase_id FK
+        numeric amount
+        varchar mode
+        int paid_by FK }

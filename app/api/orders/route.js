@@ -87,3 +87,5 @@ export const GET = handler(async () => {
   );
   return Response.json(rows);
 });
+
+export const dynamic = 'force-dynamic';

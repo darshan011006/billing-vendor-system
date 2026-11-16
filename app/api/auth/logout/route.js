@@ -5,3 +5,5 @@ export async function POST() {
   cookies().delete(SESSION_COOKIE);
   return Response.json({ ok: true });
 }
+
+export const dynamic = 'force-dynamic';
