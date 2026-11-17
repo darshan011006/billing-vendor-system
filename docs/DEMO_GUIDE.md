@@ -17,7 +17,7 @@ Start the app (`npm run dev`, or double-click `Start BillDesk.bat` on Windows / 
 * **Say:** 15 entity sets and 23 relationship sets (16 tables). Point out the M:N `STOCKED AT` relationship (product × branch) whose attributes `quantity` and `updated_at` become the `stock` table; the weak entities `ORDER_ITEM`, `PURCHASE_ITEM` and `INVOICE_SEQUENCE` (double rectangles) with their identifying relationships (double diamonds) and partial keys; the 1:1 `BILLED AS` (order → invoice); the **recursive** `PARENT OF` on `CATEGORY`; derived attributes such as `line_total` and `amount_paid` (dashed ovals); double lines for total participation (every order is placed by a customer, taken at a branch and created by a user).
 
 ## 2. Relational Schema with Keys, Relationships, Constraints
-* **Show:** `docs/RELATIONAL_SCHEMA.md` (generated from the live catalog), section "Relationships" and "Kinds of constraints used".
+* **Show:** `docs/schema-diagram.png` (every relation with its primary key underlined and an arrow from each foreign key to the key it references), then `docs/RELATIONAL_SCHEMA.md` (generated from the live catalog), sections "Relationships" and "Kinds of constraints used".
 * **Say:** composite PKs, 24 foreign keys, CHECK constraints at column and row level, a generated column, 3NF reasoning.
 
 ## 3. SQL Implementation – DDL with Constraints

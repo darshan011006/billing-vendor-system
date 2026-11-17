@@ -56,6 +56,7 @@ Sign-in is two steps: password, then a 6-digit WhatsApp code. Without WhatsApp A
 | --- | --- |
 | [docs/DEMO_GUIDE.md](docs/DEMO_GUIDE.md) | What to show for each of the 14 demo deliverables |
 | [docs/RELATIONAL_SCHEMA.md](docs/RELATIONAL_SCHEMA.md) | Relations, keys, relationships, constraints, normalisation |
+| [docs/schema-diagram.png](docs/schema-diagram.png) | Relational schema diagram: every table, primary keys, foreign-key arrows (source: [docs/schema](docs/schema)) |
 | [docs/er-diagram.png](docs/er-diagram.png) | ER diagram in Chen notation (source: [docs/er](docs/er)); table view: [docs/er-diagram-crowsfoot.png](docs/er-diagram-crowsfoot.png) |
 | [docs/TECH_JUSTIFICATION.md](docs/TECH_JUSTIFICATION.md) | Why PostgreSQL + MongoDB + Next.js |
 | [docs/VIVA_PREP.md](docs/VIVA_PREP.md) | Likely viva questions and live-modification tasks |
