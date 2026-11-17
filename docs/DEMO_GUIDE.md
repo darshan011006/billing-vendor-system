@@ -13,8 +13,8 @@ Start the app (`npm run dev`, or double-click `Start BillDesk.bat` on Windows / 
 ---
 
 ## 1. ER Diagram
-* **Show:** `docs/er-diagram.png` (source `docs/er-diagram.mmd`), also in the report.
-* **Say:** 16 entities. Point out the M:N `stock` (product × branch), the weak entities `order_items` / `purchase_items`, the 1:1 order → invoice, and the **recursive** category → category relationship.
+* **Show:** `docs/er-diagram.png` (Chen notation, legend in the bottom-left corner; source in `docs/er/`), also in the report. `docs/er-diagram-crowsfoot.png` is the same schema as tables.
+* **Say:** 15 entity sets and 23 relationship sets (16 tables). Point out the M:N `STOCKED AT` relationship (product × branch) whose attributes `quantity` and `updated_at` become the `stock` table; the weak entities `ORDER_ITEM`, `PURCHASE_ITEM` and `INVOICE_SEQUENCE` (double rectangles) with their identifying relationships (double diamonds) and partial keys; the 1:1 `BILLED AS` (order → invoice); the **recursive** `PARENT OF` on `CATEGORY`; derived attributes such as `line_total` and `amount_paid` (dashed ovals); double lines for total participation (every order is placed by a customer, taken at a branch and created by a user).
 
 ## 2. Relational Schema with Keys, Relationships, Constraints
 * **Show:** `docs/RELATIONAL_SCHEMA.md` (generated from the live catalog), section "Relationships" and "Kinds of constraints used".
